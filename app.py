@@ -377,7 +377,7 @@ st.markdown(
     h(
         """
 <div class="hero">
-<div class="hero-eyebrow">Home coffee bar · Indian edition</div>
+<div class="hero-eyebrow">Home coffee bar · Easy Ingredients </div>
 <div class="brand">Sam's Coffee Bar</div>
 <div class="hero-rule"></div>
 <div class="hero-meta"><span>Nescafé ₹10 sachets</span><span>Country Delight milk</span><span>No machine needed</span></div>
