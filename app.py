@@ -30,7 +30,7 @@ RECIPES = {
         "strength": "Mild–medium",
         "time": "5 min",
     },
-    "Cold Latte": {
+    "Iced Latte": {
         "icon": "🧊",
         "tagline": "Creamy, chilled and easy",
         "coffee_sachets": 1,
@@ -44,7 +44,7 @@ RECIPES = {
             "Fill a tall glass with ice and add 160 ml chilled Country Delight milk.",
             "Pour the coffee concentrate over the milk and stir.",
         ],
-        "tip": "Use refrigerator-cold Country Delight milk for the cleanest cold-latte taste.",
+        "tip": "Use refrigerator-cold Country Delight milk for the cleanest iced-latte taste.",
         "strength": "Mild–medium",
         "time": "3 min",
     },
@@ -66,7 +66,7 @@ RECIPES = {
         "strength": "Medium",
         "time": "5 min",
     },
-    "Cold Cappuccino": {
+    "Iced Cappuccino": {
         "icon": "❄️",
         "tagline": "Cold, frothy and coffee-forward",
         "coffee_sachets": 1,
@@ -234,6 +234,26 @@ RECIPES = {
 import random
 
 
+import re
+
+
+def scale_step(text: str, n: int) -> str:
+    """Scale every quantity (sachets, ml, tbsp, tsp) in a method step by the number of cups."""
+    if n == 1:
+        return text
+
+    def mul(num: str) -> str:
+        return "–".join(str(int(x) * n) for x in num.split("–"))
+
+    text = re.sub(
+        r"(\d+)( ₹10 Nescafé sachet)",
+        lambda m: f"{int(m.group(1)) * n}{m.group(2)}s",
+        text,
+    )
+    text = re.sub(r"(\d+(?:–\d+)?)( ?(?:ml|tbsp|tsp)\b)", lambda m: mul(m.group(1)) + m.group(2), text)
+    return text.replace("into a cup.", "into a jug or cup.").replace("into a small cup.", "into a small jug or cup.")
+
+
 def h(s: str) -> str:
     """Flatten HTML so Streamlit's markdown never treats it as a code block."""
     return "".join(line.strip() for line in s.splitlines())
@@ -271,7 +291,7 @@ st.markdown(
 
 html, body, .stApp { font-family: 'Inter', sans-serif; }
 .stApp { background: #f4eee6; color: #2a1b14; }
-#MainMenu, footer, [data-testid="stToolbar"] { visibility: hidden; }
+footer { visibility: hidden; }
 .block-container { max-width: 1060px; padding-top: 1.4rem; padding-bottom: 3rem; }
 
 /* Hero: flat, editorial */
@@ -447,7 +467,7 @@ with left:
     with st.container(border=True):
         done = 0
         for i, step in enumerate(recipe["method"], start=1):
-            if st.checkbox(f"**{i}.** {step}", key=f"step_{selected}_{i}"):
+            if st.checkbox(f"**{i}.** {scale_step(step, servings)}", key=f"step_{selected}_{i}"):
                 done += 1
         total = len(recipe["method"])
         st.progress(done / total, text=f"{done} of {total} steps done")
