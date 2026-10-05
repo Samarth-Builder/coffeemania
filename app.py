@@ -292,6 +292,21 @@ st.markdown(
 html, body, .stApp { font-family: 'Inter', sans-serif; }
 .stApp { background: #f4eee6; color: #2a1b14; }
 footer { visibility: hidden; }
+
+/* Top bar: Fork + GitHub icon (and Deploy) */
+[data-testid="stToolbar"],
+[data-testid="stToolbarActions"],
+[data-testid="stHeader"],
+[data-testid="stDecoration"] { display: none !important; }
+
+/* Bottom corner: creator avatar + Streamlit badge */
+[class*="viewerBadge"],
+[class*="_profileContainer_"],
+[class*="_profilePreview_"],
+[class*="_container_gzau3"],
+[data-testid="appCreatorAvatar"],
+a[href*="streamlit.io/cloud"],
+a[href*="share.streamlit.io"] { display: none !important; }
 .block-container { max-width: 1060px; padding-top: 1.4rem; padding-bottom: 3rem; }
 
 /* Hero: flat, editorial */
